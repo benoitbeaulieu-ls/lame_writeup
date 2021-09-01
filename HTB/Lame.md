@@ -3,7 +3,7 @@ Lame
  -------------------------------------
 # Overview
 
-The machine I'm going to attempt to eploit a the linux machine called "Lame". This is one of the OSCP like boxes that have been listed by @TJ_Null on Twitter. Since I'm preparing for my OSCP I'm going to exploit this box without metasploit. At the end of the write up I will have a section on exploiting it with metasploit.
+The machine I'm going to attempt to exploit is a linux machine called "Lame". This is one of the OSCP like boxes that have been listed by @TJ_Null on Twitter. Since I'm preparing for my OSCP I'm going to exploit this box without metasploit. At the end of the write up I will have a section on exploiting it with metasploit.
 
 # Reconnaissance 
 
