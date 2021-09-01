@@ -1,8 +1,13 @@
 Lame
 
  -------------------------------------
+# Overview
+
+The machine I'm going to attempt to eploit a the linux machine called "Lame". This is one of the OSCP like boxes that have been listed by @TJ_Null on Twitter. Since I'm preparing for my OSCP I'm going to exploit this box without metasploit. At the end of the write up I will have a section on exploiting it with metasploit.
 
 # Reconnaissance 
+
+For this machine we are given the IP addess 10.10.10.3. I'm going to start by running a few nmap scan to get some more information about the target and see if I can find some potential entry point
 
 ### ****Scanning****
 
@@ -64,7 +69,7 @@ Now let's dive deeper into these services and see if we can find any vulnerabili
 Now let use the best "hacking" tool that exists... Google. Google shows us that it is in fact a vulnerable verison and is vulnerable to remote code excution. 
 
 - ***Vulnerabily Explanation***
-To exploit this vulnerability we need to trigger the malicious function `vsf_sysutil_extra();` function by sending a sequence of specific bytes. If the execution is successful it should open a backfoor on port 6200 of the vulnerable system.
+To exploit this vulnerability we need to trigger the malicious function `vsf_sysutil_extra();` function by sending a sequence of specific bytes. If the execution is successful it should open a backdoor on port 6200 of the vulnerable system.
 
 - ***nmap script scan***
 To verify that it is vulnerable to this attack lets use an nmap script 
@@ -133,7 +138,7 @@ I found CVE-2007–2447 which I  can exploit without using metasploit and get ro
 
 ``username = "/=`nohup " + payload.encoded + "`"``
 
-The payload exploits the username field as the fild allowed you to enter metacharacters so that we can inject our payload. Before exploiting this let check the last service.
+The payload exploits the username field as the fild allowed you to enter metacharacters so that we can inject our payload. Before exploiting this lets check the last service.
 
 
 *note: had to download smbmap directly from github as the lastest debian package was not working* 
@@ -241,6 +246,7 @@ Now let open up a listener on our machine.
 
 After running this eploit several times with different payloads I was not able to get the reverse shell. For some reason the exploit was not running my run file at all. Looked up some solutions after trying for a while and was still not able to get the priviledge escalation. Could be the machine acting up. will try again in the future.
 
+*Update: After reseting the machine I was able to get the root
 
 
 
