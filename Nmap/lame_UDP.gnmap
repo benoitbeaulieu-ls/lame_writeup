@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr 19 14:06:24 2021 as: nmap -sU -p- -T4 -O -oA lame_UDP 10.10.10.3
+Host: 10.10.10.3 ()	Status: Up
+Host: 10.10.10.3 ()	Ports: 22/closed/udp//ssh///, 139/closed/udp//netbios-ssn///, 445/closed/udp//microsoft-ds///, 3632/closed/udp//distcc///	Ignored State: open|filtered (65531)
+# Nmap done at Mon Apr 19 14:49:06 2021 -- 1 IP address (1 host up) scanned in 2562.22 seconds

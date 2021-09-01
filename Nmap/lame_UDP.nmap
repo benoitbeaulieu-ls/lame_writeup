@@ -1,0 +1,14 @@
+# Nmap 7.80 scan initiated Mon Apr 19 14:06:24 2021 as: nmap -sU -p- -T4 -O -oA lame_UDP 10.10.10.3
+Nmap scan report for 10.10.10.3
+Host is up (0.037s latency).
+Not shown: 65531 open|filtered ports
+PORT     STATE  SERVICE
+22/udp   closed ssh
+139/udp  closed netbios-ssn
+445/udp  closed microsoft-ds
+3632/udp closed distcc
+Too many fingerprints match this host to give specific OS details
+Network Distance: 2 hops
+
+OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Apr 19 14:49:06 2021 -- 1 IP address (1 host up) scanned in 2562.22 seconds

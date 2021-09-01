@@ -1,0 +1,24 @@
+# Nmap 7.80 scan initiated Sat Apr 17 13:49:56 2021 as: nmap -sS -T4 -sV -p445 --script vuln -oA lame_vuln 10.10.10.3
+Pre-scan script results:
+|_broadcast-avahi-dos: ERROR: Script execution failed (use -d to debug)
+Nmap scan report for 10.10.10.3
+Host is up (0.036s latency).
+
+PORT    STATE SERVICE     VERSION
+445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+|_smb-vuln-webexec: ERROR: Script execution failed (use -d to debug)
+
+Host script results:
+|_smb-double-pulsar-backdoor: ERROR: Script execution failed (use -d to debug)
+|_smb-vuln-cve-2017-7494: ERROR: Script execution failed (use -d to debug)
+|_smb-vuln-ms06-025: ERROR: Script execution failed (use -d to debug)
+|_smb-vuln-ms07-029: ERROR: Script execution failed (use -d to debug)
+|_smb-vuln-ms08-067: ERROR: Script execution failed (use -d to debug)
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: false
+|_smb-vuln-ms17-010: ERROR: Script execution failed (use -d to debug)
+|_smb-vuln-regsvc-dos: ERROR: Script execution failed (use -d to debug)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Apr 17 13:50:24 2021 -- 1 IP address (1 host up) scanned in 28.57 seconds

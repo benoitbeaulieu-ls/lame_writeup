@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Mon Apr 19 14:06:24 2021 as: nmap -sU -p- -T4 -O -oA lame_UDP 10.10.10.3 -->
+<nmaprun scanner="nmap" args="nmap -sU -p- -T4 -O -oA lame_UDP 10.10.10.3" start="1618855584" startstr="Mon Apr 19 14:06:24 2021" version="7.80" xmloutputversion="1.04">
+<scaninfo type="udp" protocol="udp" numservices="65535" services="1-65535"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1618855584" endtime="1618858146"><status state="up" reason="echo-reply" reason_ttl="63"/>
+<address addr="10.10.10.3" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><extraports state="open|filtered" count="65531">
+<extrareasons reason="no-responses" count="65531"/>
+</extraports>
+<port protocol="udp" portid="22"><state state="closed" reason="port-unreach" reason_ttl="63"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="udp" portid="139"><state state="closed" reason="port-unreach" reason_ttl="63"/><service name="netbios-ssn" method="table" conf="3"/></port>
+<port protocol="udp" portid="445"><state state="closed" reason="port-unreach" reason_ttl="63"/><service name="microsoft-ds" method="table" conf="3"/></port>
+<port protocol="udp" portid="3632"><state state="closed" reason="port-unreach" reason_ttl="63"/><service name="distcc" method="table" conf="3"/></port>
+</ports>
+<os><portused state="closed" proto="udp" portid="22"/>
+</os>
+<distance value="2"/>
+<times srtt="36528" rttvar="5797" to="100000"/>
+</host>
+<runstats><finished time="1618858146" timestr="Mon Apr 19 14:49:06 2021" elapsed="2562.22" summary="Nmap done at Mon Apr 19 14:49:06 2021; 1 IP address (1 host up) scanned in 2562.22 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

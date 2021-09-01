@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Apr 19 09:57:46 2021 as: nmap -sC -sV -p- -T4 -O -oA lame_deep 10.10.10.3
+Host: 10.10.10.3 ()	Status: Up
+Host: 10.10.10.3 ()	Ports: 21/open/tcp//ftp//vsftpd 2.3.4/, 22/open/tcp//ssh//OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)/, 139/open/tcp//netbios-ssn//Samba smbd 3.X - 4.X (workgroup: WORKGROUP)/, 445/open/tcp//netbios-ssn//Samba smbd 3.X - 4.X (workgroup: WORKGROUP)/, 3632/open/tcp//distccd//distccd v1 ((GNU) 4.2.4 (Ubuntu 4.2.4-1ubuntu4))/	Ignored State: filtered (65530)	Seq Index: 203	IP ID Seq: All zeros
+# Nmap done at Mon Apr 19 10:00:33 2021 -- 1 IP address (1 host up) scanned in 167.94 seconds

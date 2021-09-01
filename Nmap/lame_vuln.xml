@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Sat Apr 17 13:49:56 2021 as: nmap -sS -T4 -sV -p445 -&#45;script vuln -oA lame_vuln 10.10.10.3 -->
+<nmaprun scanner="nmap" args="nmap -sS -T4 -sV -p445 -&#45;script vuln -oA lame_vuln 10.10.10.3" start="1618681796" startstr="Sat Apr 17 13:49:56 2021" version="7.80" xmloutputversion="1.04">
+<scaninfo type="syn" protocol="tcp" numservices="1" services="445"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<prescript><script id="broadcast-avahi-dos" output="ERROR: Script execution failed (use -d to debug)"/></prescript><host starttime="1618681805" endtime="1618681824"><status state="up" reason="echo-reply" reason_ttl="63"/>
+<address addr="10.10.10.3" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="445"><state state="open" reason="syn-ack" reason_ttl="63"/><service name="netbios-ssn" product="Samba smbd" version="3.X - 4.X" extrainfo="workgroup: WORKGROUP" method="probed" conf="10"><cpe>cpe:/a:samba:samba</cpe></service><script id="clamav-exec" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-vuln-webexec" output="ERROR: Script execution failed (use -d to debug)"/></port>
+</ports>
+<hostscript><script id="smb-double-pulsar-backdoor" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-vuln-cve-2017-7494" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-vuln-ms06-025" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-vuln-ms07-029" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-vuln-ms08-067" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-vuln-ms10-054" output="false">false</script><script id="smb-vuln-ms10-061" output="false">false</script><script id="smb-vuln-ms17-010" output="ERROR: Script execution failed (use -d to debug)"/><script id="smb-vuln-regsvc-dos" output="ERROR: Script execution failed (use -d to debug)"/></hostscript><times srtt="35977" rttvar="27578" to="146289"/>
+</host>
+<runstats><finished time="1618681824" timestr="Sat Apr 17 13:50:24 2021" elapsed="28.57" summary="Nmap done at Sat Apr 17 13:50:24 2021; 1 IP address (1 host up) scanned in 28.57 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

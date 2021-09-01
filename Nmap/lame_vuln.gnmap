@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sat Apr 17 13:49:56 2021 as: nmap -sS -T4 -sV -p445 --script vuln -oA lame_vuln 10.10.10.3
+Host: 10.10.10.3 ()	Status: Up
+Host: 10.10.10.3 ()	Ports: 445/open/tcp//netbios-ssn//Samba smbd 3.X - 4.X (workgroup: WORKGROUP)/
+# Nmap done at Sat Apr 17 13:50:24 2021 -- 1 IP address (1 host up) scanned in 28.57 seconds
