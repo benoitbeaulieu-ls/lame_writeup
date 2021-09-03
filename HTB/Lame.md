@@ -7,7 +7,7 @@ The machine I'm going to attempt to exploit is a linux machine called "Lame". Th
 
 # Reconnaissance 
 
-For this machine we are given the IP addess 10.10.10.3. I'm going to start by running a few nmap scan to get some more information about the target and see if I can find some potential entry point
+For this machine we are given the IP addess 10.10.10.3. I'm going to start by running a few nmap scans to get some more information about the target and see if I can find some potential entry point
 
 ### ****Scanning****
 
@@ -132,13 +132,13 @@ Now before we go any further let's see what permissions we have on the share dri
 
 As you can see we have READ and WRITE access to the tmp folder.
 
-Now that we have the smb version, let search for it on Google. I found a ton of vulnerabilitie and we could esially expoit this with metasploit. However, I would like to exploit this without using metasploit as I'm preparing for the OSCP. Don't worry though I will show the metasploit exploitation as well.
+Now that we have the smb version, let search for it on Google. I found a ton of vulnerabilitie and we could easily exploit this with metasploit. However, I would like to exploit this without using metasploit as I'm preparing for the OSCP. Don't worry though I will show the metasploit exploitation as well.
 
-I found CVE-2007–2447 which I  can exploit without using metasploit and get root access. By looking at the metasploit script we can see the paylad is actually very simple. All we need to do is replace the *payload.encoded" with out payload.
+I found CVE-2007–2447 which I  can exploit without using metasploit and get root access. By looking at the metasploit script we can see the payload is actually very simple. All we need to do is replace the *payload.encoded" with our payload.
 
 ``username = "/=`nohup " + payload.encoded + "`"``
 
-The payload exploits the username field as the fild allowed you to enter metacharacters so that we can inject our payload. Before exploiting this lets check the last service.
+The payload exploits the username field as the field allows you to enter metacharacters so that we can inject our payload. Before exploiting this lets check the last service.
 
 
 *note: had to download smbmap directly from github as the lastest debian package was not working* 
@@ -204,7 +204,7 @@ Let find our linux version out.
 
 ![Screenshot from 2021-04-27 09-33-34.png](../_resources/2619fb79bd3d4d868fe61150134720fe.png)
 
-I tried a few priviledge escalations from exploitdb with no luck. After digging around Google for a bit I was able to find an priviledge escalation that might work.
+I tried a few priviledge escalations from exploitdb with no luck. After digging around Google for a bit I was able to find a priviledge escalation that might work.
 
 First step is to set up a server
 
@@ -218,12 +218,12 @@ Since it's a C file we need to compile it using gcc.
 
 `gcc 8572.c -o 8572`
 
-Let look at the usage before we execute the file.
+Let's look at the usage before we execute the file.
 
 
 ![Screenshot from 2021-04-30 22-55-55.png](../_resources/507b385b0e5b4fb8b0722120df5d2b2a.png)
 
-There's ac ouple things that we will need to do to get this to work.
+There's a couple things that we will need to do to get this to work.
 
 - find the PID id the udevd netlink
 - Put a paylod in the /tmp forder and it will run as root.
@@ -244,7 +244,7 @@ Now lets create a quick srcipt that will give us a reverse shell when it's ran i
 
 Now let open up a listener on our machine.
 
-After running this eploit several times with different payloads I was not able to get the reverse shell. For some reason the exploit was not running my run file at all. Looked up some solutions after trying for a while and was still not able to get the priviledge escalation. Could be the machine acting up. will try again in the future.
+After running this exploit several times with different payloads I was not able to get the reverse shell. For some reason the exploit was not running my file at all. I looked up some solutions after trying for a while and was still not able to get the priviledge escalation. Could be the machine acting up. will try again in the future.
 
 *Update: After reseting the machine I was able to get the root
 
@@ -256,7 +256,7 @@ After running this eploit several times with different payloads I was not able t
 ## Metasploit Exploitation
 
 
-After stating up metasploit I searched for samba vulnerabilities. A few results were listed as you can see below 
+After starting up metasploit I searched for samba vulnerabilities. A few results were listed as you can see below 
 
 
 ![Screenshot from 2021-04-17 13-46-36.png](../_resources/bbd58b3fdcd74b79875ee6ef9783a011.png)
