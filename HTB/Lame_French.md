@@ -5,7 +5,7 @@ Lame
  -------------------------------------
 # Aperçu
 
-La machine que je vais tenter d'exploiter est une machine Linux appelée "Lame". C'est l'une des boîtes de type OSCP répertoriées par @TJ_Null sur Twitter. Puisque je prépare mon OSCP je vais exploiter cette box sans metasploit. À la fin de l'article, j'aurai une section sur son exploitation avec metasploit
+La machine que je vais tenter d'exploiter est une machine Linux appelée "Lame". C'est l'une des boîtes de type OSCP répertoriées par @TJ_Null sur Twitter. Puisque je prépare mon OSCP je vais exploiter cette machine sans metasploit. À la fin de l'article, j'aurai une section sur mon exploitation avec metasploit.
 
 # Reconnaissance 
 
@@ -239,7 +239,7 @@ Après avoir exécuté cet eploit plusieurs fois avec différentes charges utile
 
 
 -----------------------------------------------
-## Metasploit Exploitation
+## Exploitation Metasploit
 
 
 Après avoir déclaré metasploit, j'ai recherché des vulnérabilités de samba. Quelques résultats ont été répertoriés comme vous pouvez le voir ci-dessous
